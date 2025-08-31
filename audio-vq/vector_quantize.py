@@ -106,7 +106,7 @@ class VectorQuantize(nn.Module):
             avg_probs = torch.mean(encodings, dim=0)
             perplexity = torch.exp(-torch.sum(avg_probs * torch.log(avg_probs + 1e-10)))
         vq_loss = F.mse_loss(z_e, z_q.detach())
-        z_q = z_e if self.ema_strategy == "warmup" else z_q
+        z_q = z_e if self.ema_strategy == "warmup" else (z_e + (z_q - z_e).detach())
         z_q = self.outproj(z_q)
         
         return self.box_result(z_q=z_q, perplexity=perplexity, vq_loss=vq_loss )
@@ -122,7 +122,7 @@ class VectorQuantize(nn.Module):
 
         commit_loss = ( F.mse_loss(z_e, z_q.detach(), reduction="none").mean([1, 2]) )
         codebook_loss = ( F.mse_loss(z_q, z_e.detach(), reduction="none").mean([1, 2]))
-
+        z_q = z_e + (z_q - z_e).detach()
         z_q = self.outproj(z_q)
         return self.box_result(z_q=z_q, commit_loss=commit_loss, codebook_loss=codebook_loss, indices=indices)
     
@@ -140,7 +140,7 @@ class VectorQuantize(nn.Module):
 
         avg_probs = y_soft.mean(dim=0)  
         target = torch.full_like(y_soft, 1.0 / avg_probs.size(0))
-        kl_loss = F.kl_div((avg_probs + + 1e-10).log(), target, reduction='sum')
+        kl_loss = F.kl_div((avg_probs + 1e-10).log(), target, reduction='sum')
 
         indices = torch.argmax(y_soft, dim=1)
 

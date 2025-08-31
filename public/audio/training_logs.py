@@ -7,7 +7,7 @@ import os
 from typing import List, Dict, Any, Union
 import soundfile
 
-class AudioTrainLogs:
+class TrainingLogs:
     def __init__(self, save_dir:str, log_steps:int,sample_rate:int, optimizers: List[optim.Optimizer] = None):
         self.save_dir = save_dir
         self.log_steps = log_steps

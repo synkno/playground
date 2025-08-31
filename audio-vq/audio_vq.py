@@ -4,8 +4,8 @@ from typing import List, Dict, Any, Tuple
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from .vector_quantize import VectorQuantize
-from public.torch_utils import init_weights
+from vector_quantize import VectorQuantize
+from public.toolkit.nn import init_weights
 
 def make_group_norm(num_channels:int, max_groups:int = 8) -> nn.GroupNorm:
     for g in range(min(max_groups, num_channels), 0, -1):

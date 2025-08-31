@@ -6,6 +6,52 @@ from .object import Obj
 import typing
 import os
 import json
+import torch.optim as optim
+
+def init_weights(m, target_types):
+    if isinstance(m, target_types):
+        nn.init.trunc_normal_(m.weight, std=0.02)
+        #使用 截断正态分布（truncated normal distribution） 初始化卷积核的权重。
+        #std=0.02 表示标准差为 0.02，均值默认为 0。
+        #截断正态分布意味着：如果生成的值太远离均值（通常超过两倍标准差），就会被重新采样，使权重分布更集中、更稳定。
+        nn.init.constant_(m.bias, 0)
+        
+def clip_optimizer_grad(optimizer: optim.Optimizer,  clip_val: float):
+    #防止梯度爆炸，提升训练稳定性。
+    torch.nn.utils.clip_grad_norm_([ps for g in optimizer.param_groups for ps in g["params"]], clip_val)
+
+def set_requires_grad(model: nn.Module, flag: bool = True) -> None:
+    for p in model.parameters():
+        p.requires_grad = flag 
+    
+
+__stored_params = {}
+def __print_json(data, file:str = None):
+    if file is None:
+        print(json.dumps(data, indent=4))
+        return
+    with open(file,'a+',encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+        f.write("\n\n")
+
+def start_update_params(model:nn.Module):
+    global __stored_params
+    __stored_params = {name: param.clone() for name, param in model.named_parameters()}
+
+def stop_update_params(model:nn.Module, file:str = None):
+    global __stored_params
+    names = [] 
+    for name, param in model.named_parameters():
+        if not torch.equal(__stored_params[name], param):
+            names.append(name)
+    __print_json(names, file)
+
+def list_grad_params(model:nn.Module, file:str = None):
+    names = [] 
+    for name, param in model.named_parameters():
+        if param.grad is not None:
+            names.append(name)
+    __print_json(names, file)
 
 def __format_weights(num):
     magnitude = 0
