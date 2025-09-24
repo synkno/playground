@@ -6,5 +6,5 @@
             "packageManager": "ms-python.python:pip"
         }
     ],
-    "python.analysis.extraPaths": ["/code/playground/"]
+    "python.analysis.extraPaths": ["/code/playground/", "/code/playground/3rd-libs/"]
 }

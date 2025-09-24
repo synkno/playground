@@ -173,7 +173,7 @@ class AudioFSQ(nn.Module):
 def build_model(
     input_dim: int = 128,       
     levels:List[int] = [4, 4, 4, 4, 4, 4],
-    num_codebooks:int = 12,
+    num_codebooks:int = 1,
     base_channels: int = 128,
     strides: List[int] = [5, 4, 2, 1],
     num_res_per_stage: int = 1,

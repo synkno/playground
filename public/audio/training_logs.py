@@ -33,9 +33,11 @@ class TrainingLogs:
         save_dir = os.path.join(self.save_dir, f"temp-val/{self.current_epoch}-{step}")
         os.makedirs(save_dir, exist_ok=True)
 
-        for index, (raw_wav, rec_wav) in cached_demos.items():
-            soundfile.write(f"{save_dir}/{index}_rec.wav", rec_wav, self.sample_rate)
-            soundfile.write(f"{save_dir}/{index}_raw.wav", raw_wav, self.sample_rate)
+        for index, item in cached_demos.items():
+            soundfile.write(f"{save_dir}/{index}_rec.wav", item[1], self.sample_rate)
+            soundfile.write(f"{save_dir}/{index}_raw.wav", item[0], self.sample_rate)
+            if len(item) >= 3:
+                soundfile.write(f"{save_dir}/{index}_spk.wav", item[2], self.sample_rate)
         self.validation_step_outputs.append(loss_dict)
     
     def validation_end(self):

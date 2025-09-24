@@ -30,9 +30,10 @@ class MultiMelSpecLoss(nn.Module):
         self.clamp_eps = clamp_eps
     def forward(self, x:torch.Tensor, y:torch.Tensor)->torch.Tensor:
         loss = 0.0
+        t = x.dtype
         for mel_transform in self.mel_transforms:
-            x_mel:torch.Tensor = mel_transform(x)
-            y_mel:torch.Tensor = mel_transform(y)
+            x_mel:torch.Tensor = mel_transform(x.to(torch.float32)).to(t)
+            y_mel:torch.Tensor = mel_transform(y.to(torch.float32)).to(t)
 
             log_x_mel = x_mel.clamp(self.clamp_eps).log10()
             log_y_mel = y_mel.clamp(self.clamp_eps).log10()
