@@ -19,6 +19,6 @@ config = {
     "dtype" : torch.bfloat16,
     "decoder" : "v0",
     "use_disc" : False,
-    "model_file" : "/code/playground/audio-data/temp-19/temp-training/199-37000/model.torch"
+    "model_file" : None#"/code/playground/audio-data/temp-19/temp-training/199-37000/model.torch"
 }
 # 最终效果最好的一版的配置, 训练了400epoch

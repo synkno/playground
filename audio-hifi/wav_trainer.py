@@ -21,13 +21,14 @@ from operator import itemgetter
 from config import config
 
 from torchaudio.transforms import MelSpectrogram
+from log_melspec import LogMelSpec
 
 
 class WavTrainer(nn.Module):
     def __init__(self, 
         gen:WavGen, 
         disc:WaveDisc,
-        mel_spec:MelSpectrogram,
+        mel_spec:LogMelSpec,
         mel_loss:MultiMelSpecLoss, 
         sample_rate:int,
         adamw_betas:List[float],

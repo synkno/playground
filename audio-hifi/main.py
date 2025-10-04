@@ -29,7 +29,7 @@ from typing import Tuple
 import torch.nn.functional as F
 
 from config import config
-from torchaudio.transforms import MelSpectrogram
+from log_melspec import LogMelSpec
 from typing import List
 from wav_trainer import WavTrainer, WavGen
 from wav_disc import WaveDisc
@@ -100,14 +100,13 @@ def train_model(local_rank: int, out_dir:str, data_file:str, epochs:int, model_f
         window_lengths= [x * scale for x in [32, 64, 128, 256, 512, 1024, 2048]] ,
         clamp_eps=1.0e-5,
     )
-    mel_spec = MelSpectrogram(
+    mel_spec = LogMelSpec(
         sample_rate=sample_rate,
         n_fft=1024,
         win_length=1024,
         hop_length=config["hop_length"],
         n_mels=128,
         center=True
-
     )
     wav_gen = WavGen(sample_rate=sample_rate).to(config["dtype"])
     wav_disc = WaveDisc(
