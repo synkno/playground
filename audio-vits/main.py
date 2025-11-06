@@ -15,7 +15,7 @@ import torch
 
 def infer():
     device = "cuda" if torch.cuda.is_available() else "cpu"
-    dtype = torch.bfloat16
+    dtype = torch.float32
     net_g = SynthTrn( 
         spec_channels=config["filter_length"] // 2 + 1, 
         segment_size=trncnf["segment_size"] // config["hop_length"], 
@@ -39,7 +39,7 @@ def infer():
         flow_share_parameter=False,
         n_flow_layer=4,
     )
-    utils.load_checkpoint("/code/playground/audio-data/vits/49200_G.pth", net_g)
+    utils.load_checkpoint("/code/playground/audio-data/vits/196800_G.pth", net_g)
     net_g = net_g.to(device=device, dtype=dtype)
 
     loader = create_loader(
@@ -76,8 +76,8 @@ def infer():
         
     
 if __name__ == "__main__":
-    #infer()
-    #exit()
+    infer()
+    exit()
 
     import argparse
     import subprocess

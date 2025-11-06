@@ -28,7 +28,7 @@ def infer():
         timesteps = 1000,
         k_step_max = 0
     )
-    utils.load_checkpoint("/code/playground/audio-data/diff/73800_model.pth", unit2mel)
+    utils.load_checkpoint("/code/playground/audio-data/diff/246000_model.pth", unit2mel)
     unit2mel = unit2mel.to(device=device, dtype=dtype)
 
     loader = create_loader(

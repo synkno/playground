@@ -5,10 +5,10 @@ config = {
     "net_g" : "/code/playground/audio-data/vits/49200_G.pth",
     "net_d" : "/code/playground/audio-data/vits/49200_D.pth",
     "learning_rate" : 0.00001,
-    "epochs": 200,
+    "epochs": 800,
     "filter_length": 2048,
     "hop_length" : 512,
-    "dtype" : torch.bfloat16,
+    "dtype" : torch.float32,
 
     "spk_map" : {
         "speaker5": 0,    "speaker18": 1,    "speaker40": 2,    "speaker29": 3,    "speaker21": 4,    "speaker2": 5,    "speaker1": 6,    
